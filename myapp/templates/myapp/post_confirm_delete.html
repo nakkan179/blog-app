@@ -1,0 +1,31 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        
+        <br>
+        <h2>Post削除</h2>
+        <br>
+        <div class="alert alert-danger" role="alert">
+            <form method="post">
+                {% csrf_token %}
+                <p>以下の内容を本当に削除しますか？</p>
+                <input type="submit" class="btn btn-danger" value="削除する">
+            </form>
+
+    </div>
+
+    <br>
+    <p>タイトル<p>
+    {{ object.title }}
+    <hr>
+    <p>内容</p>
+    {{ object.content }}
+
+    <br>
+    <br>
+</div>
+
+
+{% endblock %}

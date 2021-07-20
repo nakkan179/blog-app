@@ -1,0 +1,63 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<!-- Start your project here-->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h2 class="display-4">{{ request.site.siteconfig.top_title }}</h2>
+    <p class="lead">{{ request.site.siteconfig.top_subtitle }}</p>
+  </div>
+</div> <!-- End your project here-->
+
+
+<div class="row">
+
+  <!-- Card deck -->
+  <div class="card-deck">
+
+    {% for item in post_list %}
+    <div class="col-md-4">
+      <!-- Card -->
+      <div class="card mb-4">
+
+        <!--Card image-->
+        <div class="view overlay">
+          {% if item.thumbnail %}
+          <img class="card-img-top" src="{{ item.thumbnail.url }}" alt="{{item.title}}">
+          {% else %}
+          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg" alt="Card image cap">
+          {% endif %}
+          <a href="{% url 'myapp:post_detail' item.id %}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Card content-->
+        <div class="card-body">
+
+          <!--Title-->
+          <h4 class="card-title">{{ item.title }}</h4>
+          <p class='card-text'>{{item.category}}</p>
+          <!--Text-->
+          <p class="card-text">{{ item.content|safe|truncatechars_html:30 }}</p>
+          <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+          <a href="{% url 'myapp:post_detail' item.id %}" type="button" class="btn btn-light-blue btn-md">Read more</a>
+          <i class="fas fa-heart" style="color:pink;"></i>&nbsp;{{ item.like_count }}
+        </div>
+        <div class="card-footer text-muted text-center mt-4">
+          <small>by&nbsp;{{ item.author }}&nbsp;at {{ item.created_at.date }}</small>
+        </div>
+        
+      </div>
+      <!-- Card -->
+    </div>
+    {% endfor %}
+
+  </div>
+  <!-- Card deck -->
+  <a type="button" class="btn btn-outline-success" data-mdb-ripple-color="dark"
+    href="{% url 'myapp:post_list' %}">全ての記事を見る</a>
+
+</div>
+
+{% endblock %}

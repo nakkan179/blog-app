@@ -1,0 +1,55 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-9">
+        <br>
+        <br>
+
+        <div class="card">
+
+            {% if object.thumbnail %}
+            <img class="card-img-top" src="{{ object.thumbnail.url }}" alt="{{object.title}}">
+            {% else %}
+            <img src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" class="card-img-top" alt="..." />
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ object.title }}</h5>
+                <p class="card-text">{{ object.content|safe|linebreaksbr|urlize }}</p>
+                <a class="btn" href="{% url 'myapp:like_add' object.pk %}"
+                    style="background-color:#FF6699; color:white">お気に入りに入れる</a>
+                <small>{% if object.like_count %}{{ object.like_count }}人がお気に入りに入れています。{% endif %}</small>
+                <hr>
+                <a href="javascript:void(0);" onclick="window.history.back();" class="btn btn-outline-dark">戻る</a>
+                {% if object.author == request.user %}
+                <a href="{% url 'myapp:post_update' object.id %}" class="btn btn-primary">更新</a>
+                <a href="{% url 'myapp:post_delete' object.id %}" class="btn btn-outline-danger">削除</a>
+                {% endif %}
+            </div>
+            <div class="card-footer text-muted text-center mt-4">
+                <small>by&nbsp;{{ object.author }}&nbsp;at {{ object.created_at.date }}</small>
+            </div>
+
+        </div>
+
+        <br>
+        <br>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ object.category }}</h5>
+                <p>このカテゴリの他の記事</p>
+            </div>
+            <ul class="list-group">
+                {% for item in category_posts %}
+                <li class="list-group-item"><a href="{% url 'myapp:post_detail' item.id %}">{{ item.title }}</a></li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+    </div>
+
+    {% endblock %}
